@@ -1,0 +1,57 @@
+.card {
+  background: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15), 0px 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 10px 20px 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card:not(:last-of-type) {
+  margin-bottom: 15px;
+}
+
+.cardTitleBlock {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.cardTitleBlock h3 {
+  font-weight: 400;
+}
+
+.berryIconWrapper {
+  border-radius: 0 20px 20px 0;
+  padding: 10px;
+  background: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15), 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.berryIcon {
+  width: 25px;
+  height: 25px;
+  display: block;
+}
+
+.cardChipsList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardChip {
+  background: #e6e6e6;
+  border: 1px solid #d4d4d4;
+  color: #a8a8a8;
+  text-transform: lowercase;
+  white-space: nowrap;
+  padding: 0 10px;
+  border-radius: 10px;
+  transition: all 0.5s;
+}
+/* .cardChip:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15), 0px 2px 6px rgba(0, 0, 0, 0.1);
+} */
