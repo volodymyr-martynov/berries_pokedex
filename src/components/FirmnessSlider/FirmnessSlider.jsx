@@ -1,45 +1,29 @@
-import { useRef } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { firmnessColors } from "./constants";
 import styles from "./FirmnessSlider.module.css";
 
-const firmnessButtonsConfig = [
-  {
-    title: "Super Hard",
-    id: "super_hard",
-    color: "red",
-  },
-  {
-    title: "Hard",
-    id: "hard",
-    color: "orange",
-  },
-  {
-    title: "Soft",
-    id: "soft",
-    color: "green",
-  },
-  {
-    title: "Very Soft",
-    id: "very_soft",
-    color: "lightgreen",
-  },
-];
-
-export default function FirmnessSlider() {
+export default function FirmnessSlider({ options, setSelectedFirmness }) {
   const [dotPosition, setDotPosition] = useState(100);
-  const [dotColor, setDotColor] = useState(firmnessButtonsConfig.at(-1).color);
+  const [dotColor, setDotColor] = useState();
 
-  const total = useRef(firmnessButtonsConfig.length);
+  useEffect(() => {
+    if (options.length) {
+      const option = options.at(-1);
+      setDotColor(firmnessColors[option.id]);
+      setSelectedFirmness(option.name);
+    }
+  }, [options]);
 
-  const onFirmnessLevelChange = (color, index) => {
+  const onFirmnessLevelChange = (option, index) => {
     return () => {
-      const step = 100 / (total.current - 1);
+      const step = 100 / (options.length - 1);
       //   console.log("index", index, step, step * index);
 
       const newDotPosition = step * index;
 
       setDotPosition(newDotPosition);
-      setDotColor(color);
+      setDotColor(firmnessColors[option.id]);
+      setSelectedFirmness(option.name);
     };
   };
 
@@ -52,18 +36,22 @@ export default function FirmnessSlider() {
         ></span>
       </div>
       <div className={styles.sliderButtonsList}>
-        {firmnessButtonsConfig.map((fbc, i) => (
+        {options.map((option, i) => (
           <button
-            key={fbc.id}
+            key={option.id}
             className={styles.sliderButton}
             style={
-              dotColor === fbc.color
+              dotColor === firmnessColors[option.id]
                 ? { color: dotColor, fontWeight: "bold" }
                 : {}
             }
-            onClick={onFirmnessLevelChange(fbc.color, i)}
+            onClick={onFirmnessLevelChange(option, i)}
           >
-            {fbc.title} <span className={styles.sliderButtonAmmount}>1</span>
+            {/* Assume that order will not be changed. */}
+            {option.names[4].name}{" "}
+            <span className={styles.sliderButtonAmmount}>
+              {option.quantity}
+            </span>
           </button>
         ))}
       </div>

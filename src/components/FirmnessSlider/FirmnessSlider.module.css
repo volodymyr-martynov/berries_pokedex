@@ -40,6 +40,8 @@
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  white-space: nowrap;
+  width: 90px;
 }
 
 .sliderButtonAmmount {
