@@ -1,41 +1,40 @@
 import { useState } from "react";
-import { BerryCard } from "./components/BerryCard";
-import { useEffect } from "react";
 import { FirmnessSlider } from "./components/FirmnessSlider";
 import styles from "./App.module.css";
+import { BerriesCardsList } from "./components/BerriesCardsList";
+import { useMemo } from "react";
+import { useBerriesData } from "./hooks/useBerriesData";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [items, setItems] = useState([]);
-  const [page, setPage] = useState(0);
+  const { items, firmnessOptions, isLoading, error } = useBerriesData();
 
-  const fetchItems = async () => {
-    try {
-      const res = await fetch("https://pokeapi.co/api/v2/berry");
-      const data = await res.json();
+  const [selectedFirmness, setSelectedFirmness] = useState(null);
 
-      setItems(data.results);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => item.firmness.name === selectedFirmness);
+  }, [selectedFirmness, items]);
 
   return (
     <div>
-      <div>
-        <h1>Pok`e Berries</h1>
-        <span>How tought are you?</span>
-      </div>
-      <div className={styles.appWrapper}>
-        <FirmnessSlider />
-        <div>
-          {items.map((item) => (
-            <BerryCard key={item.name} name={item.name} url={item.url} />
-          ))}
-        </div>
-      </div>
+      {isLoading ? (
+        <h1>loading</h1>
+      ) : error ? (
+        <h1>Something went wrong</h1>
+      ) : (
+        <>
+          <div>
+            <h1>Pok`e Berries</h1>
+            <span>How tought are you?</span>
+          </div>
+          <div className={styles.appWrapper}>
+            <FirmnessSlider
+              options={firmnessOptions}
+              setSelectedFirmness={setSelectedFirmness}
+            />
+            <BerriesCardsList items={filteredItems} />
+          </div>
+        </>
+      )}
     </div>
   );
 }
