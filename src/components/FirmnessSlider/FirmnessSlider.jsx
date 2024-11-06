@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { firmnessColors } from "./constants";
+import { dotHeight, firmnessColors } from "./constants";
 import styles from "./FirmnessSlider.module.css";
 
 export default function FirmnessSlider({ options, setSelectedFirmness }) {
-  const [dotPosition, setDotPosition] = useState(100);
+  const [dotPosition, setDotPosition] = useState(`calc(100% - ${dotHeight}px)`);
   const [dotColor, setDotColor] = useState();
 
   useEffect(() => {
@@ -17,11 +17,14 @@ export default function FirmnessSlider({ options, setSelectedFirmness }) {
   const onFirmnessLevelChange = (option, index) => {
     return () => {
       const step = 100 / (options.length - 1);
-      //   console.log("index", index, step, step * index);
 
-      const newDotPosition = step * index;
+      const percantagePosition = step * index;
 
-      setDotPosition(newDotPosition);
+      setDotPosition(
+        `calc(${percantagePosition}% - ${
+          (percantagePosition * dotHeight) / 100
+        }px)`
+      );
       setDotColor(firmnessColors[option.id]);
       setSelectedFirmness(option.name);
     };
@@ -30,10 +33,12 @@ export default function FirmnessSlider({ options, setSelectedFirmness }) {
   return (
     <div className={styles.sliderWrapper}>
       <div className={styles.sliderBody}>
-        <span
-          className={styles.sliderDot}
-          style={{ top: `${dotPosition}%`, color: dotColor }}
-        ></span>
+        <div className={styles.sliderInner}>
+          <span
+            className={styles.sliderDot}
+            style={{ top: `${dotPosition}`, color: dotColor }}
+          ></span>
+        </div>
       </div>
       <div className={styles.sliderButtonsList}>
         {options.map((option, i) => (

@@ -5,3 +5,5 @@ export const firmnessColors = {
   4: "red",
   5: "darkred",
 };
+
+export const dotHeight = 20;
