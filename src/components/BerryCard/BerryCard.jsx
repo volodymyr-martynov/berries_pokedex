@@ -1,8 +1,9 @@
 import styles from "./BerryCard.module.css";
 import BerryIcon from "../../assets/berry_icon.svg";
 
-export default function BerryCard({ name, url }) {
-  // console.log("url");
+export default function BerryCard({ item }) {
+  const { flavors, name } = item;
+
   return (
     <div className={styles.card}>
       <div className={styles.cardTitleBlock}>
@@ -12,8 +13,14 @@ export default function BerryCard({ name, url }) {
         <h3>{name}</h3>
       </div>
       <ul className={styles.cardChipsList}>
-        <li className={styles.cardChip}>spicy</li>
-        <li className={styles.cardChip}>sour</li>
+        {flavors.map(
+          ({ flavor, potency }) =>
+            potency > 0 && (
+              <li key={flavor.name} className={styles.cardChip}>
+                {flavor.name}
+              </li>
+            )
+        )}
       </ul>
     </div>
   );
